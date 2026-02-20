@@ -14,75 +14,6 @@
             background: var(--light-bg);
         }
 
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            margin-top: 60px;
-        }
-
-        .contact-info-card {
-            background: white;
-            padding: 50px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-medium);
-        }
-
-        .contact-info-card h3 {
-            font-size: 2rem;
-            color: var(--primary-blue);
-            margin-bottom: 30px;
-            font-weight: 800;
-        }
-
-        .contact-details {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-
-        .contact-detail-item {
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
-        }
-
-        .contact-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--light-bg);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent-red);
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-
-        .contact-detail-content h4 {
-            font-size: 1.1rem;
-            color: var(--primary-blue);
-            margin-bottom: 8px;
-            font-weight: 700;
-        }
-
-        .contact-detail-content p {
-            color: var(--text-muted);
-            line-height: 1.6;
-            margin: 0;
-        }
-
-        .contact-detail-content a {
-            color: var(--secondary-blue);
-            text-decoration: none;
-            transition: var(--transition);
-        }
-
-        .contact-detail-content a:hover {
-            color: var(--accent-red);
-        }
-
         .contact-form-card {
             background: white;
             padding: 50px;
@@ -164,12 +95,6 @@
         }
 
         @media (max-width: 992px) {
-            .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .contact-info-card,
             .contact-form-card {
                 padding: 30px;
             }
@@ -246,59 +171,10 @@
                 </p>
             </div>
 
-            <div class="contact-grid">
-                <!-- Contact Info -->
-                <div class="contact-info-card">
-                    <h3>Nos Coordonnées</h3>
-                    <div class="contact-details">
-                        <div class="contact-detail-item">
-                            <div class="contact-icon">
-                                <i class="fas fa-map-marker-alt"></i>
-                            </div>
-                            <div class="contact-detail-content">
-                                <h4>Adresse</h4>
-                                <p>Avenue Kwango à l'immeuble Le 130 commune de Gombe, Kinshasa, Democratic Republic of the Congo</p>
-                            </div>
-                        </div>
-
-                        <div class="contact-detail-item">
-                            <div class="contact-icon">
-                                <i class="fas fa-phone-alt"></i>
-                            </div>
-                            <div class="contact-detail-content">
-                                <h4>Téléphone</h4>
-                                <p><a href="tel:+243810006134">+243 810 006 134</a></p>
-                            </div>
-                        </div>
-
-                        <div class="contact-detail-item">
-                            <div class="contact-icon">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div class="contact-detail-content">
-                                <h4>Email</h4>
-                                <p><a href="mailto:contact@meweong.org">contact@meweong.org</a></p>
-                            </div>
-                        </div>
-
-                        <div class="contact-detail-item">
-                            <div class="contact-icon">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <div class="contact-detail-content">
-                                <h4>Horaires d'ouverture</h4>
-                                <p>Lundi - Vendredi: 8h00 - 17h00<br>
-                                Samedi: 9h00 - 13h00<br>
-                                Dimanche: Fermé</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Contact Form -->
-                <div class="contact-form-card">
-                    <h3>Envoyez-nous un Message</h3>
-                    <form id="contact-form">
+            <!-- Contact Form -->
+            <div class="contact-form-card" style="max-width: 800px; margin: 0 auto;">
+                <h3>Envoyez-nous un Message</h3>
+                <form id="contact-form">
                         <div class="form-group">
                             <label for="name">Nom complet *</label>
                             <input type="text" id="name" name="name" required placeholder="Votre nom">
