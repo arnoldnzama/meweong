@@ -850,7 +850,7 @@ section {
 .diagram-circle.inner {
     width: 120px;
     height: 120px;
-    background: var(--primary-blue);
+    background: transparent;
     color: white;
     display: flex;
     align-items: center;
@@ -858,7 +858,7 @@ section {
     font-weight: 900;
     font-size: 1.5rem;
     z-index: 5;
-    box-shadow: var(--shadow-medium);
+    box-shadow: none;
     border-radius: 50%;
     padding: 15px;
 }
