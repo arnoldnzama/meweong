@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galerie Photos - Mewe ONG</title>
+    <link rel="icon" type="image/x-icon" href="ico/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .gallery-page {
+            padding: 100px 0;
+            background: var(--light-bg);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .project-thumbnail {
+            width: 100%;
+            height: 280px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .project-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .project-card:hover .project-thumbnail img {
+            transform: scale(1.1);
+        }
+
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(23, 95, 167, 0.9));
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+
+        .project-info {
+            color: white;
+        }
+
+        .project-info h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .project-info p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .project-content {
+            padding: 25px;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .project-count {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .project-count i {
+            color: var(--accent-red);
+        }
+
+        /* Modal Lightbox */
+        .lightbox-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .lightbox-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            animation: zoomIn 0.3s ease;
+        }
+
+        .lightbox-header {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            z-index: 10000;
+        }
+
+        .lightbox-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .lightbox-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .lightbox-close:hover {
+            background: var(--accent-red);
+            transform: rotate(90deg);
+        }
+
+        .lightbox-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 100px 40px 40px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .lightbox-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .lightbox-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Image Viewer */
+        .image-viewer {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            z-index: 10000;
+        }
+
+        .image-viewer.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .viewer-image {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            animation: zoomIn 0.3s ease;
+        }
+
+        .viewer-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .viewer-close:hover {
+            background: var(--accent-red);
+        }
+
+        .viewer-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .viewer-nav:hover {
+            background: var(--secondary-blue);
+        }
+
+        .viewer-prev {
+            left: 30px;
+        }
+
+        .viewer-next {
+            right: 30px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .lightbox-gallery {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                padding: 80px 20px 20px;
+            }
+
+            .lightbox-header {
+                padding: 0 20px;
+            }
+
+            .viewer-nav {
+                width: 50px;
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="./logo/logo.png" alt="Mewe ONG" class="logo">
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html#accueil" class="nav-link">Accueil</a></li>
+                <li class="dropdown">
+                    <a href="a-propos.html" class="nav-link">Qui sommes-nous ? <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="a-propos.html#mission"><i class="fas fa-bullseye"></i> Mission</a></li>
+                        <li><a href="a-propos.html#valeurs"><i class="fas fa-heart"></i> Valeurs</a></li>
+                        <li><a href="a-propos.html#objectifs"><i class="fas fa-tasks"></i> Objectifs</a></li>
+                    </ul>
+                </li>
+                <li><a href="index.html#actions" class="nav-link">Impact</a></li>
+                <li><a href="index.html#projets" class="nav-link">Projets</a></li>
+                <li class="dropdown">
+                    <a href="#" class="nav-link active">Médias <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="photos.html" class="active"><i class="fas fa-images"></i> Photos</a></li>
+                        <li><a href="videos.html"><i class="fas fa-video"></i> Vidéos</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="nav-link">Rejoignez-nous <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="partenaires.html"><i class="fas fa-handshake"></i> Partenaire avec nous</a></li>
+                        <li><a href="contact.html"><i class="fas fa-envelope"></i> Nous contacter</a></li>
+                    </ul>
+                </li>
+                <li class="nav-mobile-only"><a href="adherer.html" class="nav-link">Adhérer</a></li>
+            </ul>
+            <div class="nav-cta">
+                <a href="adherer.html" class="btn-donate">ADHERER</a>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="page-hero-bg">
+            <img src="img/1.png" alt="Galerie Photos">
+        </div>
+        <div class="page-hero-overlay"></div>
+        <div class="container">
+            <div class="page-hero-content">
+                <h1>Galerie Photos</h1>
+                <p>Découvrez nos projets et actions à travers des images qui racontent notre engagement.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-page">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2 class="section-title">Nos Projets en Images</h2>
+                <p class="section-subtitle">
+                    Explorez les moments marquants de nos interventions et l'impact de nos actions sur le terrain.
+                </p>
+            </div>
+
+            <div class="projects-grid">
+                <!-- Don de Soutien -->
+                <div class="project-card" onclick="openGallery('Don de Soutien', 'projets/Don_de_soutien')">
+                    <div class="project-thumbnail">
+                        <img src="projets/Don_de_soutien/p1.png" alt="Don de Soutien">
+                        <div class="project-overlay">
+                            <div class="project-info">
+                                <h3>Don de Soutien</h3>
+                                <p>Cliquez pour voir la galerie</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Don de Soutien</h3>
+                        <p class="project-count"><i class="fas fa-images"></i> 6 photos</p>
+                    </div>
+                </div>
+
+                <!-- Don de Soutien Province Bandundu -->
+                <div class="project-card" onclick="openGallery('Don de Soutien - Province Bandundu', 'projets/Don_de_soutien_province_bandundu')">
+                    <div class="project-thumbnail">
+                        <img src="projets/Don_de_soutien_province_bandundu/p1.png" alt="Don Province Bandundu">
+                        <div class="project-overlay">
+                            <div class="project-info">
+                                <h3>Don Province Bandundu</h3>
+                                <p>Cliquez pour voir la galerie</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Don Province Bandundu</h3>
+                        <p class="project-count"><i class="fas fa-images"></i> 6 photos</p>
+                    </div>
+                </div>
+
+                <!-- Inauguration École -->
+                <div class="project-card" onclick="openGallery('Inauguration École', 'projets/Inauguration_ecole')">
+                    <div class="project-thumbnail">
+                        <img src="projets/Inauguration_ecole/p1.png" alt="Inauguration École">
+                        <div class="project-overlay">
+                            <div class="project-info">
+                                <h3>Inauguration École</h3>
+                                <p>Cliquez pour voir la galerie</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Inauguration École</h3>
+                        <p class="project-count"><i class="fas fa-images"></i> 6 photos</p>
+                    </div>
+                </div>
+
+                <!-- Inauguration Hôpital -->
+                <div class="project-card" onclick="openGallery('Inauguration Hôpital', 'projets/Inauguration_hopital')">
+                    <div class="project-thumbnail">
+                        <img src="projets/Inauguration_hopital/p1.png" alt="Inauguration Hôpital">
+                        <div class="project-overlay">
+                            <div class="project-info">
+                                <h3>Inauguration Hôpital</h3>
+                                <p>Cliquez pour voir la galerie</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Inauguration Hôpital</h3>
+                        <p class="project-count"><i class="fas fa-images"></i> 6 photos</p>
+                    </div>
+                </div>
+
+                <!-- Soutien aux Aînés -->
+                <div class="project-card" onclick="openGallery('Soutien aux Aînés', 'projets/soutien_aux_aines')">
+                    <div class="project-thumbnail">
+                        <img src="projets/soutien_aux_aines/p1.png" alt="Soutien aux Aînés">
+                        <div class="project-overlay">
+                            <div class="project-info">
+                                <h3>Soutien aux Aînés</h3>
+                                <p>Cliquez pour voir la galerie</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Soutien aux Aînés</h3>
+                        <p class="project-count"><i class="fas fa-images"></i> 6 photos</p>
+                    </div>
+                </div>
+
+                <!-- Soutien Communautaire -->
+                <div class="project-card" onclick="openGallery('Soutien Communautaire', 'projets/soutien_communautaire')">
+                    <div class="project-thumbnail">
+                        <img src="projets/soutien_communautaire/p1.png" alt="Soutien Communautaire">
+                        <div class="project-overlay">
+                            <div class="project-info">
+                                <h3>Soutien Communautaire</h3>
+                                <p>Cliquez pour voir la galerie</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Soutien Communautaire</h3>
+                        <p class="project-count"><i class="fas fa-images"></i> 6 photos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox-modal" class="lightbox-modal">
+        <div class="lightbox-header">
+            <h2 class="lightbox-title" id="lightbox-title"></h2>
+            <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+        </div>
+        <div class="lightbox-gallery" id="lightbox-gallery"></div>
+    </div>
+
+    <!-- Image Viewer -->
+    <div id="image-viewer" class="image-viewer">
+        <button class="viewer-close" onclick="closeViewer()">&times;</button>
+        <button class="viewer-nav viewer-prev" onclick="prevImage()"><i class="fas fa-chevron-left"></i></button>
+        <img id="viewer-image" class="viewer-image" src="" alt="">
+        <button class="viewer-nav viewer-next" onclick="nextImage()"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="./logo/logo.png" alt="Mewe ONG" class="logo">
+                    </div>
+                    <p class="footer-description">
+                        Une fondation internationale dédiée à l'amélioration des conditions de vie
+                        des communautés vulnérables à travers l'éducation, la santé et le développement durable.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Nos Actions</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html#actions">Éducation</a></li>
+                        <li><a href="index.html#actions">Santé</a></li>
+                        <li><a href="index.html#actions">Solidarité</a></li>
+                        <li><a href="index.html#actions">Développement Durable</a></li>
+                        <li><a href="index.html#projets">Projets en cours</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>S'engager</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html#don">Faire un don</a></li>
+                        <li><a href="index.html#benevole">Devenir bénévole</a></li>
+                        <li><a href="partenaires.html">Devenir partenaire</a></li>
+                        <li><a href="#newsletter">Newsletter</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Avenue Kwango à l'immeuble Le 130 commune de Gombe, Kinshasa, Democratic Republic of the Congo</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone-alt"></i>
+                            <span>+243 810 006 134</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>contact@meweong.org</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="newsletter-section">
+                <h4>Restez informé de nos actions</h4>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Votre adresse email" required>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i>
+                        S'abonner
+                    </button>
+                </form>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2024 Mewe ONG. Tous droits réservés.</p>
+                    <div class="footer-legal">
+                        <a href="#mentions-legales">Mentions légales</a>
+                        <a href="#politique-confidentialite">Politique de confidentialité</a>
+                        <a href="#cookies">Cookies</a>
+                        <a href="#transparence">Transparence financière</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        const projects = {
+            'Don de Soutien': ['p1.png', 'p2.png', 'p3.png', 'p4.png', 'p5.png', 'p-6.png'],
+            'Don de Soutien - Province Bandundu': ['p1.png', 'p2.png', 'p3.png', 'p4.png', 'p5.png', 'p-6.png'],
+            'Inauguration École': ['p1.png', 'p2.png', 'p3.png', 'p4.png', 'p5.png', 'p-6.png'],
+            'Inauguration Hôpital': ['p1.png', 'p2.png', 'p3.png', 'p4.png', 'p5.png', 'p-6.png'],
+            'Soutien aux Aînés': ['p1.png', 'p2.png', 'p3.png', 'p4.png', 'p5.png', 'p-6.png'],
+            'Soutien Communautaire': ['p1.png', 'p2.png', 'p3.png', 'p4.png', 'p5.png', 'p-6.png']
+        };
+
+        let currentImages = [];
+        let currentIndex = 0;
+
+        function openGallery(title, folder) {
+            const modal = document.getElementById('lightbox-modal');
+            const titleEl = document.getElementById('lightbox-title');
+            const gallery = document.getElementById('lightbox-gallery');
+            
+            titleEl.textContent = title;
+            gallery.innerHTML = '';
+            
+            const images = projects[title];
+            currentImages = images.map(img => `${folder}/${img}`);
+            
+            images.forEach((img, index) => {
+                const imgEl = document.createElement('img');
+                imgEl.src = `${folder}/${img}`;
+                imgEl.alt = `${title} - Photo ${index + 1}`;
+                imgEl.className = 'lightbox-image';
+                imgEl.onclick = () => openViewer(index);
+                gallery.appendChild(imgEl);
+            });
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const modal = document.getElementById('lightbox-modal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function openViewer(index) {
+            const viewer = document.getElementById('image-viewer');
+            const img = document.getElementById('viewer-image');
+            
+            currentIndex = index;
+            img.src = currentImages[currentIndex];
+            
+            viewer.classList.add('active');
+        }
+
+        function closeViewer() {
+            const viewer = document.getElementById('image-viewer');
+            viewer.classList.remove('active');
+        }
+
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+            document.getElementById('viewer-image').src = currentImages[currentIndex];
+        }
+
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % currentImages.length;
+            document.getElementById('viewer-image').src = currentImages[currentIndex];
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const viewer = document.getElementById('image-viewer');
+            if (viewer.classList.contains('active')) {
+                if (e.key === 'Escape') closeViewer();
+                if (e.key === 'ArrowLeft') prevImage();
+                if (e.key === 'ArrowRight') nextImage();
+            }
+            
+            const modal = document.getElementById('lightbox-modal');
+            if (modal.classList.contains('active') && e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+
+        // Close on background click
+        document.getElementById('lightbox-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'lightbox-modal') closeLightbox();
+        });
+
+        document.getElementById('image-viewer').addEventListener('click', (e) => {
+            if (e.target.id === 'image-viewer') closeViewer();
+        });
+    </script>
+</body>
+
+</html>
