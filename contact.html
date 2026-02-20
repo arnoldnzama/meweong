@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Mewe ONG</title>
+    <link rel="icon" type="image/x-icon" href="ico/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .contact-page {
+            padding: 100px 0;
+            background: var(--light-bg);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-top: 60px;
+        }
+
+        .contact-info-card {
+            background: white;
+            padding: 50px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .contact-info-card h3 {
+            font-size: 2rem;
+            color: var(--primary-blue);
+            margin-bottom: 30px;
+            font-weight: 800;
+        }
+
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .contact-detail-item {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--light-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-red);
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .contact-detail-content h4 {
+            font-size: 1.1rem;
+            color: var(--primary-blue);
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .contact-detail-content p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .contact-detail-content a {
+            color: var(--secondary-blue);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .contact-detail-content a:hover {
+            color: var(--accent-red);
+        }
+
+        .contact-form-card {
+            background: white;
+            padding: 50px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .contact-form-card h3 {
+            font-size: 2rem;
+            color: var(--primary-blue);
+            margin-bottom: 30px;
+            font-weight: 800;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--secondary-blue);
+            box-shadow: 0 0 0 3px rgba(81, 176, 232, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .map-section {
+            margin-top: 80px;
+            background: white;
+            padding: 60px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .map-section h3 {
+            font-size: 2rem;
+            color: var(--primary-blue);
+            margin-bottom: 30px;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 450px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        @media (max-width: 992px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .contact-info-card,
+            .contact-form-card {
+                padding: 30px;
+            }
+
+            .map-section {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="./logo/logo.png" alt="Mewe ONG" class="logo">
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html#accueil" class="nav-link">Accueil</a></li>
+                <li class="dropdown">
+                    <a href="a-propos.html" class="nav-link">Qui sommes-nous ? <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="a-propos.html#mission"><i class="fas fa-bullseye"></i> Mission</a></li>
+                        <li><a href="a-propos.html#valeurs"><i class="fas fa-heart"></i> Valeurs</a></li>
+                        <li><a href="a-propos.html#objectifs"><i class="fas fa-tasks"></i> Objectifs</a></li>
+                    </ul>
+                </li>
+                <li><a href="index.html#actions" class="nav-link">Impact</a></li>
+                <li><a href="index.html#projets" class="nav-link">Projets</a></li>
+                <li><a href="index.html#temoignages" class="nav-link">Témoignages</a></li>
+                <li class="dropdown">
+                    <a href="#" class="nav-link">Rejoignez-nous <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="partenaires.html"><i class="fas fa-handshake"></i> Partenaire avec nous</a></li>
+                        <li><a href="contact.html" class="active"><i class="fas fa-envelope"></i> Nous contacter</a></li>
+                    </ul>
+                </li>
+                <li class="nav-mobile-only"><a href="adherer.html" class="nav-link">Adhérer</a></li>
+            </ul>
+            <div class="nav-cta">
+                <a href="adherer.html" class="btn-donate">ADHERER</a>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="page-hero-bg">
+            <img src="img/18.jpg" alt="Contact Mewe ONG">
+        </div>
+        <div class="page-hero-overlay"></div>
+        <div class="container">
+            <div class="page-hero-content">
+                <h1>Contactez-nous</h1>
+                <p>Nous sommes à votre écoute. N'hésitez pas à nous contacter pour toute question ou collaboration.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-page">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2 class="section-title">Entrons en Contact</h2>
+                <p class="section-subtitle">
+                    Notre équipe est disponible pour répondre à vos questions et discuter de vos projets de collaboration.
+                </p>
+            </div>
+
+            <div class="contact-grid">
+                <!-- Contact Info -->
+                <div class="contact-info-card">
+                    <h3>Nos Coordonnées</h3>
+                    <div class="contact-details">
+                        <div class="contact-detail-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-detail-content">
+                                <h4>Adresse</h4>
+                                <p>Avenue Kwango à l'immeuble Le 130 commune de Gombe, Kinshasa, Democratic Republic of the Congo</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-detail-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div class="contact-detail-content">
+                                <h4>Téléphone</h4>
+                                <p><a href="tel:+243810006134">+243 810 006 134</a></p>
+                            </div>
+                        </div>
+
+                        <div class="contact-detail-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-detail-content">
+                                <h4>Email</h4>
+                                <p><a href="mailto:contact@meweong.org">contact@meweong.org</a></p>
+                            </div>
+                        </div>
+
+                        <div class="contact-detail-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="contact-detail-content">
+                                <h4>Horaires d'ouverture</h4>
+                                <p>Lundi - Vendredi: 8h00 - 17h00<br>
+                                Samedi: 9h00 - 13h00<br>
+                                Dimanche: Fermé</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="contact-form-card">
+                    <h3>Envoyez-nous un Message</h3>
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <label for="name">Nom complet *</label>
+                            <input type="text" id="name" name="name" required placeholder="Votre nom">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required placeholder="votre@email.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Téléphone</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+243 ...">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">Sujet *</label>
+                            <select id="subject" name="subject" required>
+                                <option value="">Sélectionnez un sujet</option>
+                                <option value="information">Demande d'information</option>
+                                <option value="partenariat">Partenariat</option>
+                                <option value="don">Don / Soutien</option>
+                                <option value="benevole">Bénévolat</option>
+                                <option value="autre">Autre</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" required placeholder="Votre message..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i class="fas fa-paper-plane"></i>
+                            Envoyer le message
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Map Section -->
+            <div class="map-section">
+                <h3>Notre Localisation</h3>
+                <div class="map-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3978.4947!2d15.3!3d-4.3!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNMKwMTgnMDAuMCJTIDE1wrAxOCcwMC4wIkU!5e0!3m2!1sfr!2scd!4v1234567890"
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="./logo/logo.png" alt="Mewe ONG" class="logo">
+                    </div>
+                    <p class="footer-description">
+                        Une fondation internationale dédiée à l'amélioration des conditions de vie
+                        des communautés vulnérables à travers l'éducation, la santé et le développement durable.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Nos Actions</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html#actions">Éducation</a></li>
+                        <li><a href="index.html#actions">Santé</a></li>
+                        <li><a href="index.html#actions">Solidarité</a></li>
+                        <li><a href="index.html#actions">Développement Durable</a></li>
+                        <li><a href="index.html#projets">Projets en cours</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>S'engager</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html#don">Faire un don</a></li>
+                        <li><a href="index.html#benevole">Devenir bénévole</a></li>
+                        <li><a href="partenaires.html">Devenir partenaire</a></li>
+                        <li><a href="#newsletter">Newsletter</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Avenue Kwango à l'immeuble Le 130 commune de Gombe, Kinshasa, Democratic Republic of the Congo</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone-alt"></i>
+                            <span>+243 810 006 134</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>contact@meweong.org</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="newsletter-section">
+                <h4>Restez informé de nos actions</h4>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Votre adresse email" required>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i>
+                        S'abonner
+                    </button>
+                </form>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2024 Mewe ONG. Tous droits réservés.</p>
+                    <div class="footer-legal">
+                        <a href="#mentions-legales">Mentions légales</a>
+                        <a href="#politique-confidentialite">Politique de confidentialité</a>
+                        <a href="#cookies">Cookies</a>
+                        <a href="#transparence">Transparence financière</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Contact Form Submission
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = this.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
+            btn.disabled = true;
+
+            // Simulation
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i> Message envoyé !';
+                btn.style.background = '#51b0e8';
+
+                setTimeout(() => {
+                    alert('Merci pour votre message ! Notre équipe vous contactera prochainement.');
+                    this.reset();
+                    btn.innerHTML = originalText;
+                    btn.style.background = '';
+                    btn.disabled = false;
+                }, 1500);
+            }, 2000);
+        });
+    </script>
+</body>
+
+</html>
