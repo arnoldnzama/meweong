@@ -859,6 +859,14 @@ section {
     font-size: 1.5rem;
     z-index: 5;
     box-shadow: var(--shadow-medium);
+    border-radius: 50%;
+    padding: 15px;
+}
+
+.diagram-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .diagram-node {
