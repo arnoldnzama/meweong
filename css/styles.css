@@ -360,6 +360,7 @@ body {
     z-index: 10;
     width: 100%;
     padding: 0 40px;
+    margin-top: 100px;
 }
 
 .hero-title {
